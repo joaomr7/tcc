@@ -1,0 +1,3 @@
+[submodule "external/RAKG"]
+	path = external/RAKG
+	url = https://github.com/LMMApplication/RAKG.git
