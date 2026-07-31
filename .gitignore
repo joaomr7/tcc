@@ -219,3 +219,6 @@ __marimo__/
 
 # RAKG
 external/RAKG/.venv/
+
+# artifacts
+artifacts/
