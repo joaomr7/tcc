@@ -4,8 +4,16 @@ from typing import Dict, List, Union
 import torch
 from transformers import AutoModel, AutoTokenizer
 
-from ..external.DMRST_Parser.model_depth import ParsingNet
-from ..external.DMRST_Parser.MUL_main_Infer import inference
+from pathlib import Path
+import sys
+
+# Add DMRST Parser to the Python import path
+PROJECT_ROOT = Path.cwd().resolve().parent
+DMRST_PATH = PROJECT_ROOT / 'external' / 'DMRST_Parser'
+sys.path.insert(0, str(DMRST_PATH))
+
+from model_depth import ParsingNet
+from MUL_main_Infer import inference
 
 class DMRSTParser:
     def __init__(

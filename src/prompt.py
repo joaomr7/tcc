@@ -46,7 +46,16 @@ class KGCentralEntity(BaseModel):
 class KnowledgeGraphResult(BaseModel):
     central_entity: KGCentralEntity
 
-# Prompts
+# Alignment
+class ItemEduAlignment(BaseModel):
+    item_id: str
+    edu_ids: list[int]
+
+class RSTEdgeSelection(BaseModel):
+    source_item_id: str | None
+    target_item_id: str | None
+
+# KG Prompts
 def get_named_entity_prompt() -> str:
     return '''
 You are a named entity recognition assistant.
@@ -160,4 +169,61 @@ Rules:
 17. A sentence index may be assigned only if that sentence directly supports the exact fact being represented. A sentence that merely mentions the entity or provides contextual information must not be cited as evidence for an unrelated description, attribute, or relationship.
 
 18. The sentence indices of an entity description must correspond only to sentences that explicitly describe or define that entity. Do not include sentences that describe only related entities or events.
+'''.strip()
+
+# KG RST Link Prompts
+
+def get_alignment_prompt() -> str:
+    return '''
+You are aligning one knowledge graph item with Elementary Discourse Units (EDUs).
+
+Select the EDU IDs that directly express the provided knowledge graph item.
+
+Rules:
+1. Use only the exact EDU IDs provided in Candidate EDUs.
+2. Select only the EDU or EDUs that directly state the item.
+3. Do not include EDUs that only provide unnecessary context.
+4. Select the smallest possible set of EDUs.
+5. Do not create, rewrite, rename, or correct the item.
+6. For a relation, consider its source, relation, and target.
+7. For an attribute, consider its entity, attribute name, and value.
+8. If none of the candidate EDUs supports the item, return an empty list.
+9. Preserve the item ID exactly as provided.
+10. Do not return EDU IDs that are not explicitly provided.
+
+Item:
+{item}
+
+Candidate EDUs:
+{edus}
+'''.strip()
+
+def get_rst_edge_prompt() -> str:
+    return '''
+Select one knowledge graph item from the left candidates and one knowledge graph item from the right candidates that best represent the RST relation.
+
+Rules:
+1. Select only IDs from the provided candidates.
+2. The source item must come from Left candidates.
+3. The target item must come from Right candidates.
+4. Prefer relations over attributes when both represent the same proposition.
+5. Select the item that best represents the complete meaning of each text span.
+6. Do not create, rewrite, rename, or correct item IDs.
+7. Return null if no suitable item exists on one side.
+8. Select only one item from each side.
+
+RST relation:
+{relation}
+
+Left text:
+{left_text}
+
+Right text:
+{right_text}
+
+Left candidates:
+{left_candidates}
+
+Right candidates:
+{right_candidates}
 '''.strip()
