@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 # Add DMRST Parser to the Python import path
-PROJECT_ROOT = Path.cwd().resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DMRST_PATH = PROJECT_ROOT / 'external' / 'DMRST_Parser'
 sys.path.insert(0, str(DMRST_PATH))
 

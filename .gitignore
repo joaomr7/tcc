@@ -222,3 +222,6 @@ external/RAKG/.venv/
 
 # artifacts
 artifacts/
+
+# graphrag
+graphrag_workspace/

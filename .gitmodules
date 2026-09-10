@@ -1,6 +1,3 @@
-[submodule "external/RAKG"]
-	path = external/RAKG
-	url = https://github.com/LMMApplication/RAKG.git
 [submodule "external/DMRST_Parser"]
 	path = external/DMRST_Parser
 	url = https://github.com/seq-to-mind/DMRST_Parser.git
